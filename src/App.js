@@ -9,15 +9,23 @@ constructor(){
   super();
   this.state = {
     products: data.products,
-    cartItems: [],
+    cartItems: localStorage.getItem("cartItems")? JSON.parse(localStorage.getItem("cartItems")):[],
     size: "",
     sort: "",
   };
 }
+createOder = (order) =>{
+  alert("Need to save order for " + order.name);
+}
 removeFromCart = (product) =>{
   const cartItems = this.state.cartItems.slice();
-  this.setState({cartItems:cartItems.filter(x=>x._id !== product._id)
+  this.setState({
+    cartItems: cartItems.filter((x) =>x._id !== product._id),
   });
+  localStorage.setItem(
+    "cartItems", 
+    JSON.stringify(cartItems.filter((x) =>x._id !== product._id))
+  );  
 };
 addToCart =(product) => {
   const cartItems = this.state.cartItems.slice();
@@ -32,6 +40,7 @@ addToCart =(product) => {
       cartItems.push({...product, count: 1});
    }
    this.setState({cartItems});
+   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 };
 sortProducts =(event) =>{
   const sort= event.target.value;
@@ -83,7 +92,9 @@ filterProducts = (event) => {
           </div>
           <div className="sidebar">
             <Cart cartItems={this.state.cartItems} 
-            removeFromCart={this.removeFromCart} />
+            removeFromCart={this.removeFromCart} 
+            createOder={this.createOder}
+            />
           </div>  
         </div>
       </main>
