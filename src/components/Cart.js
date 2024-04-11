@@ -2,6 +2,27 @@ import React, { Component } from 'react'
 import formatCurrency from '../util';
 
 export default class Cart extends Component {
+    constructor(props){
+        super(props);
+        this.state ={
+            name:"",
+            email:"",
+            address:"",
+            showCheckOut: false };
+    }
+    handleInput = (e) =>{
+        this.setState({ [e.target.name]: e.target.value});
+    };
+    createOder = (e) =>{
+        e.preventDefault();
+            const order = {
+                name: this.state.name,
+                email: this.state.email,
+                address: this.state.address,
+                cartItems: this.props.cartItems,
+            };
+            this.props.createOder(order);
+    };
   render() {
       const {cartItems} = this.props;
     return (
@@ -31,6 +52,7 @@ export default class Cart extends Component {
             </ul>
           </div>
           {cartItems.length!==0 && (
+              <div>
                 <div className="cart">
                 <div className="total">
                     <div>
@@ -38,8 +60,32 @@ export default class Cart extends Component {
                         {formatCurrency( cartItems.reduce((a,c) => a + (c.price*c.count), 0 )
                         )}
                     </div>
-                    <button className="button primary">Proceed</button>
+                    <button onClick={()=>{this.setState({showCheckOut: true})}} className="button primary">Proceed</button>
                 </div>      
+              </div>
+              {this.state.showCheckOut && (
+                  <div>
+                    <form onSubmit={this.createOder}>
+                        <ul className="form-container">
+                            <li>
+                                <label>Email</label>
+                                <input type="email" name="email" require onChange={this.handleInput} ></input> 
+                            </li>
+                            <li>
+                                <label>Name</label>
+                                <input type="text" name="name" require onChange={this.handleInput} ></input> 
+                            </li>
+                            <li>
+                                <label>Address</label>
+                                <input type="text" name="address" require onChange={this.handleInput} ></input> 
+                            </li>
+                            <li>
+                                <button className="button primary" type="submit">Checkout</button>
+                            </li>
+                        </ul>
+                    </form>
+                  </div>
+              )}
               </div>
           )}
           
