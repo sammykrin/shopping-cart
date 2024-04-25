@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require("bodyParser");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const shortid = require("shortid");
 
@@ -8,11 +8,13 @@ app.use(bodyParser.json());
 
 mongoose.connect("mongodb://localhost/shopping-cart-db",{
     useNewUrlParser: true,
-    useCreateIndex: true,
+    // useCreateIndex: true,
     useUnifiedTopology: true,
 });
 
-const Product = mongoose.model("products", new mongoose.Schema({
+const Product = mongoose.model(
+    "products", 
+    new mongoose.Schema({
     _id : { type: String, default: shortid.generate },
     title: String,
     description: String,
@@ -39,4 +41,4 @@ app.delete("/api/products/:id", async(req, res)=>{
 });
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log("serve at http://locathost:5000"));
+app.listen(port, () => console.log("serve at http://localhost:5000"));
