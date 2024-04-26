@@ -3,6 +3,8 @@ import data from './data.json';
 import Products from './components/Products';
 import Filter from './components/Filter';
 import Cart from './components/Cart';
+import store from './store';
+import { Provider } from 'react-redux';
 
 class App extends React.Component {
 constructor(){
@@ -72,6 +74,7 @@ filterProducts = (event) => {
 };
   render(){
   return (
+    <Provider store={store}>
    <div className="grid-container">
       <header>
         <a href="/">Choice-Fit</a>
@@ -98,10 +101,11 @@ filterProducts = (event) => {
           </div>  
         </div>
       </main>
-      <footer>
-      Copyright &#169; 2022 Samuel Olamilehin. All right received.
-      </footer>
-   </div>
+         <footer>
+          Copyright &#169; 2022 Samuel Olamilehin. All right received.
+        </footer>
+    </div>
+   </Provider>
   );
  }
 }
